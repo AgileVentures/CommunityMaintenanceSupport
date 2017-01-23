@@ -45,9 +45,14 @@ def total_posts_for_week_ending_on_given_day(posts, end_date):
     return reduce(lambda total, date: posts[date] + total if date <= end_date and beginning_date <= date else total , posts, 0)
 
 one_week_before_premium_signup = {}
+two_weeks_before_premium_signup = {}
+three_weeks_before_premium_signup = {}
 for premium_user in premium_postings:
     one_week_before_premium_signup[premium_user] = total_posts_for_week_ending_on_given_day(premium_postings[premium_user]["posts"], premium_postings[premium_user]["start_date"])
+    two_weeks_before_premium_signup[premium_user] = total_posts_for_week_ending_on_given_day(premium_postings[premium_user]['posts'],premium_postings[premium_user]["start_date"] - datetime.timedelta(days=7))
+    three_weeks_before_premium_signup[premium_user] = total_posts_for_week_ending_on_given_day(premium_postings[premium_user]['posts'],premium_postings[premium_user]["start_date"] - datetime.timedelta(days=14))
 
-print one_week_before_premium_signup.values()
-plt.boxplot(one_week_before_premium_signup.values())
+plt.figure()
+plt.boxplot([one_week_before_premium_signup.values(), two_weeks_before_premium_signup.values(), three_weeks_before_premium_signup.values()],1)
+
 plt.show()
