@@ -33,15 +33,15 @@ for f in files:
 # posts contains usernames as keys, to another map that has (date)day keys,
 # with values being number of posts on that day
 
-premium_postings = {}
-with open('./av/stripe_customers.csv') as stripe_customers:
-    reader = csv.DictReader(stripe_customers)
-    for customer in reader:
-        id = find_slack_id_by_email(customer['Email'])
-        if id:
-            premium_postings[id] = {"posts": posts[id], "start_date": datetime.datetime.strptime(re.sub(r'(\d\d\d\d)\-(\d\d)\-(\d\d).*', r'\1-\2-\3', customer['Created (UTC)']), '%Y-%m-%d')}
-        else:
-            print "user not found: "+ customer['Email']
+# premium_postings = {}
+# with open('./av/stripe_customers.csv') as stripe_customers:
+#     reader = csv.DictReader(stripe_customers)
+#     for customer in reader:
+#         id = find_slack_id_by_email(customer['Email'])
+#         if id:
+#             premium_postings[id] = {"posts": posts[id], "start_date": datetime.datetime.strptime(re.sub(r'(\d\d\d\d)\-(\d\d)\-(\d\d).*', r'\1-\2-\3', customer['Created (UTC)']), '%Y-%m-%d')}
+#         else:
+#             print "user not found: "+ customer['Email']
 
 # premium postings is the subset of the posts map where the user email
 # matches a premium user email (and includes start date)
@@ -65,7 +65,7 @@ def total_posts_for_week_ending_on_given_day(posts, end_date):
 
 one_week_before_export = {}
 export_time = datetime.datetime.strptime('2017-01-22',"%Y-%m-%d")
-for user in posts: 
+for user in posts:
   number_posts = total_posts_for_week_ending_on_given_day(posts[user], export_time)
   if number_posts > 0:
     one_week_before_export[users[user]['name']] = number_posts
@@ -73,9 +73,6 @@ for user in posts:
 import pprint
 import operator
 pp = pprint.PrettyPrinter(indent=4)
-output = sorted(one_week_before_export.items(), key=operator.itemgetter(1))
+output = sorted(one_week_before_export.items(), key=operator.itemgetter(1), reverse=True)
 
 pp.pprint(output)
-
-
-
