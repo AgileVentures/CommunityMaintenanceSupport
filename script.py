@@ -64,11 +64,11 @@ def total_posts_for_week_ending_on_given_day(posts, end_date):
 # plt.show()
 
 one_week_before_export = {}
-export_time = datetime.datetime.strptime('2017-01-22',"%Y-%m-%d")
+export_time = datetime.datetime.strptime('2017-03-11',"%Y-%m-%d")
 for user in posts:
   number_posts = total_posts_for_week_ending_on_given_day(posts[user], export_time)
   if number_posts > 0:
-    one_week_before_export[users[user]['name']] = number_posts
+    one_week_before_export[users[user]['name']] = (number_posts, users[user]['email'])
 
 import pprint
 import operator
