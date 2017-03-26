@@ -74,19 +74,30 @@ def user_activity_levels(date):
         activity_levels[users[user]['name']] = (number_posts, re.sub(r'.*\@','',users[user]['email']))
     return activity_levels
 
-activity_levels_one_week_before_export = user_activity_levels('2017-03-19')
-activity_levels_two_weeks_before_export = user_activity_levels('2017-03-12')
-activity_levels_three_weeks_before_export = user_activity_levels('2017-03-05')
+activity_levels_one_week_before_export = user_activity_levels('2016-03-19')
+activity_levels_two_weeks_before_export = user_activity_levels('2016-03-12')
+activity_levels_three_weeks_before_export = user_activity_levels('2016-03-05')
 
 
 #def user_activity_trends(activity_levels_week_one, activity_levels_week_two, activity_levels_week_three):
+
+trends = {}
 for user in activity_levels_one_week_before_export.keys():
     a1 = activity_levels_one_week_before_export[user][0]
     a2 = activity_levels_two_weeks_before_export.get(user,(0,''))[0]
     a3 = activity_levels_three_weeks_before_export.get(user,(0,''))[0]
-    print 2*(a1-a2)/3.0 + (a2-a3)/3.0
+    trends[user] = 2*(a1-a2)/3.0 + (a2-a3)/3.0
+
+# { 'mtc2013' => 45.6, }
+# { 'mtc2013' => (45.6, 'gmail.com'), }
 
 
+import pprint
+import operator
+pp = pprint.PrettyPrinter(indent=4)
+output = sorted(trends.items(), key=operator.itemgetter(1), reverse=True)
+
+pp.pprint(output)
 
 # import pprint
 # import operator
