@@ -62,17 +62,35 @@ def total_posts_for_week_ending_on_given_day(posts, end_date):
 # plt.boxplot([one_week_before_premium_signup.values(), two_weeks_before_premium_signup.values(), three_weeks_before_premium_signup.values()],1)
 
 # plt.show()
+#two_week_before_export_time = datetime.datetime.strptime('2017-03-12',"%Y-%m-%d")
+#three_week_before_export_time = datetime.datetime.strptime('2017-03-05',"%Y-%m-%d")
+
 import re
-one_week_before_export = {}
-export_time = datetime.datetime.strptime('2017-03-19',"%Y-%m-%d")
-for user in posts:
-  number_posts = total_posts_for_week_ending_on_given_day(posts[user], export_time)
-  if number_posts > 0:
-    one_week_before_export[users[user]['name']] = (number_posts, re.sub(r'.*\@','',users[user]['email']))
+def user_activity_levels(date):
+    activity_levels = {}
+    for user in posts:
+      number_posts = total_posts_for_week_ending_on_given_day(posts[user], datetime.datetime.strptime(date,"%Y-%m-%d"))
+      if number_posts > 0:
+        activity_levels[users[user]['name']] = (number_posts, re.sub(r'.*\@','',users[user]['email']))
+    return activity_levels
 
-import pprint
-import operator
-pp = pprint.PrettyPrinter(indent=4)
-output = sorted(one_week_before_export.items(), key=operator.itemgetter(1), reverse=True)
+activity_levels_one_week_before_export = user_activity_levels('2017-03-19')
+activity_levels_two_weeks_before_export = user_activity_levels('2017-03-12')
+activity_levels_three_weeks_before_export = user_activity_levels('2017-03-05')
 
-pp.pprint(output)
+
+#def user_activity_trends(activity_levels_week_one, activity_levels_week_two, activity_levels_week_three):
+for user in activity_levels_one_week_before_export.keys():
+    a1 = activity_levels_one_week_before_export[user][0]
+    a2 = activity_levels_two_weeks_before_export.get(user,(0,''))[0]
+    a3 = activity_levels_three_weeks_before_export.get(user,(0,''))[0]
+    print 2*(a1-a2)/3.0 + (a2-a3)/3.0
+
+
+
+# import pprint
+# import operator
+# pp = pprint.PrettyPrinter(indent=4)
+# output = sorted(activity_levels_one_week_before_export.items(), key=operator.itemgetter(1), reverse=True)
+#
+# pp.pprint(output)
