@@ -74,19 +74,22 @@ def user_activity_levels(date):
         activity_levels[users[user]['name']] = (number_posts, re.sub(r'.*\@','',users[user]['email']))
     return activity_levels
 
-activity_levels_one_week_before_export = user_activity_levels('2016-03-19')
-activity_levels_two_weeks_before_export = user_activity_levels('2016-03-12')
-activity_levels_three_weeks_before_export = user_activity_levels('2016-03-05')
+activity_levels_one_week_before_export = user_activity_levels('2017-05-07')
+activity_levels_two_weeks_before_export = user_activity_levels('2017-04-30')
+activity_levels_three_weeks_before_export = user_activity_levels('2017-04-23')
+
+print activity_levels_one_week_before_export
 
 
 #def user_activity_trends(activity_levels_week_one, activity_levels_week_two, activity_levels_week_three):
 
 trends = {}
 for user in activity_levels_one_week_before_export.keys():
+    user_email_domain = activity_levels_one_week_before_export[user][1]
     a1 = activity_levels_one_week_before_export[user][0]
     a2 = activity_levels_two_weeks_before_export.get(user,(0,''))[0]
     a3 = activity_levels_three_weeks_before_export.get(user,(0,''))[0]
-    trends[user] = 2*(a1-a2)/3.0 + (a2-a3)/3.0
+    trends[user] = (2*(a1-a2)/3.0 + (a2-a3)/3.0,user_email_domain)
 
 # { 'mtc2013' => 45.6, }
 # { 'mtc2013' => (45.6, 'gmail.com'), }
