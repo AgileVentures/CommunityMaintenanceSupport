@@ -78,10 +78,10 @@ activity_levels_one_week_before_export = user_activity_levels('2017-05-07')
 activity_levels_two_weeks_before_export = user_activity_levels('2017-04-30')
 activity_levels_three_weeks_before_export = user_activity_levels('2017-04-23')
 
-print activity_levels_one_week_before_export
-
-
 #def user_activity_trends(activity_levels_week_one, activity_levels_week_two, activity_levels_week_three):
+
+def format_direct_message_link(user_name):
+    return "https://agileventures.slack.com/messages/@"+user_name+"/"
 
 trends = {}
 for user in activity_levels_one_week_before_export.keys():
@@ -89,7 +89,7 @@ for user in activity_levels_one_week_before_export.keys():
     a1 = activity_levels_one_week_before_export[user][0]
     a2 = activity_levels_two_weeks_before_export.get(user,(0,''))[0]
     a3 = activity_levels_three_weeks_before_export.get(user,(0,''))[0]
-    trends[user] = (2*(a1-a2)/3.0 + (a2-a3)/3.0,user_email_domain)
+    trends[format_direct_message_link(user)] = (2*(a1-a2)/3.0 + (a2-a3)/3.0,user_email_domain)
 
 # { 'mtc2013' => 45.6, }
 # { 'mtc2013' => (45.6, 'gmail.com'), }
@@ -97,10 +97,13 @@ for user in activity_levels_one_week_before_export.keys():
 
 import pprint
 import operator
-pp = pprint.PrettyPrinter(indent=4)
-output = sorted(trends.items(), key=operator.itemgetter(1), reverse=True)
+#pp = pprint.PrettyPrinter(indent=4)
+output = sorted(trends.items(), key=operator.itemgetter(1), reverse=True)[0:15]
 
-pp.pprint(output)
+#pp.pprint(output)
+
+for line in output:
+    print line[0] + " " + "{0:.2f}".format(line[1][0]) + " " + line[1][1]
 
 # import pprint
 # import operator
