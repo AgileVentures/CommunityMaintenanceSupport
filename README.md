@@ -31,7 +31,9 @@ I would like to know which members to offer additional help and support to
 
 ## ToDo
 
-* Weighed ranking over multiple weeks (looking for increasing activity)
-* Logistic regression (identify predictors)
-* Automated contacting? (send "how are you doing" to anyone in the top ranked users, who has not had a DM with a mentor that week)
-* refactor code to short methods, more self documenting?
+* [x] Weighted ranking over multiple weeks (looking for increasing activity)
+* [ ] Normalise metric over activity levels to see growth at all levels
+* [ ] Use weighted ranking on previous successes, to see if they show up
+* [ ] Logistic regression (identify predictors)
+* [ ] Automated contacting? (send "how are you doing" to anyone in the top ranked users, who has not had a DM with a mentor that week)
+* [ ] refactor code to short methods, more self documenting?
