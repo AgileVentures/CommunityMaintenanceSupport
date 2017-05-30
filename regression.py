@@ -5,7 +5,7 @@ def did_user_upgrade_in(user_id, date):
         upgrade_date = premium_postings[user_id]["start_date"]
         return 1 if upgrade_date < date and upgrade_date > (date - datetime.timedelta(days=7)) else 0
     else:
-        return 0 
+        return 0
 
 def find_slack_id_by_email(user_email):
     for id, value in users.iteritems():
@@ -67,7 +67,7 @@ premium_postings = create_user_id_map_to_posts_and_upgrade_date_from_stripe_data
 #     # generate data array; [week-2,week-1,week0,metric]
 #     # lookup in premium_postings is user upgrade within week0?
 #       # if it is, then Y data is 1, if not (or no upgrade) 0
- 
+
 # Y = array([0,0, ...., 1, ...])
 
 start_date = datetime.datetime(2016, 5, 1, 0, 0, 0)
@@ -77,27 +77,20 @@ X = []
 Y = []
 
 for user_id in users:
-    for multiplier in range(1,53): 
+    for multiplier in range(1,53):
         date = start_date + datetime.timedelta(days=7*multiplier)
         if user_id in posts.keys():
             week_minus_three = total_posts_for_week_ending_on_given_day(posts[user_id], date)
             week_minus_two = total_posts_for_week_ending_on_given_day(posts[user_id], date + datetime.timedelta(days=7))
             week_minus_one = total_posts_for_week_ending_on_given_day(posts[user_id], date + datetime.timedelta(days=14))
-            # metric 
+            # metric
             X.append([week_minus_three, week_minus_two, week_minus_one])
             upgrade = did_user_upgrade_in(user_id, date + datetime.timedelta(days=21))
             Y.append(upgrade)
 
-# print X
-# print Y   
+import statsmodels.api as sm
 
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn import linear_model, datasets
-
-h = .02  # step size in the mesh
-
-logreg = linear_model.LogisticRegression(C=1e5) 
-
-# we create an instance of Neighbours Classifier and fit the data.
-logreg.fit(X, Y)
+X2 = sm.add_constant(X)
+est = sm.OLS(Y, X2)
+est2 = est.fit()
+print(est2.summary())
