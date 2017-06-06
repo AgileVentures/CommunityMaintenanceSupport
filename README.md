@@ -2,6 +2,9 @@
 
 Some analytics to investigate community activity within the AgileVentures Slack community (and associated systems)
 
+##How to run tests  
+python run_tests.py from the command line at the root of the project should suffice
+
 ## Objective
 
 How to identify community members who are contributing more and provide them with additional support.
