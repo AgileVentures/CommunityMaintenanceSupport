@@ -91,6 +91,6 @@ for user_id in users:
 import statsmodels.api as sm
 
 X2 = sm.add_constant(X)
-est = sm.OLS(Y, X2)
+est = sm.Logit(Y, X2)
 est2 = est.fit()
 print(est2.summary())
