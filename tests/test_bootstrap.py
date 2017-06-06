@@ -1,4 +1,5 @@
-import unittest
+import unittest, datetime
+import slack_posts as sp
 
 class TestStringMethods(unittest.TestCase):
 
@@ -15,6 +16,10 @@ class TestStringMethods(unittest.TestCase):
         # check that s.split fails when the separator is not a string
         with self.assertRaises(TypeError):
             s.split(2)
+
+    def test_total_posts_for_week_ending_on_given_day(self):
+        posts = {datetime.datetime(2014, 9, 26, 0, 0): 1, datetime.datetime(2014, 9, 24, 0, 0): 4}
+        self.assertEqual(sp.total_posts_for_week_ending_on_given_day(posts,datetime.datetime(2014,9,27,0,0)),5)
 
 if __name__ == '__main__':
     unittest.main()
