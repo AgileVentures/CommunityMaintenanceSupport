@@ -39,3 +39,34 @@ X2 = sm.add_constant(X)
 est = sm.Logit(Y, X2)
 est2 = est.fit()
 print(est2.summary())
+prediction_probabilities = est2.predict()
+
+L = .0003
+falsePositives = truePositives = falseNegatives = trueNegatives = 0
+
+for index, p in enumerate(prediction_probabilities):
+    result = Y[index]
+    #here we are predicting negative
+    if p < L:
+        #but the result is a positive
+        if (result == 1):
+            falseNegatives += 1
+        #and the result is a negative
+        else:
+            trueNegatives += 1
+    #here we are predicting a positive
+    else:
+        #but the result is a negative
+        if (result == 0):
+            falsePositives += 1
+        #and the result is a positive
+        else:
+            truePositives += 1
+
+print(falsePositives)
+print(truePositives)
+print(falseNegatives)
+print(trueNegatives)
+
+print 'recall is: {:10.4f}'.format(truePositives / (1.0 * (truePositives + falseNegatives)))
+print 'precision is: {:10.4f}'.format(truePositives / (1.0 * (truePositives + falsePositives)))
