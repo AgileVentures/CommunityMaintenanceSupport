@@ -1,0 +1,39 @@
+[
+    {
+      "user": "1",
+      "text": "<@1|one> has joined the channel",
+      "type": "message",
+      "subtype": "channel_join",
+      "ts": "1488455412.728924"
+    },
+    {
+        "user": "2",
+        "text": "<@2|two> has joined the channel",
+        "type": "message",
+        "subtype": "channel_join",
+        "ts": "1488455412.728924"
+    },
+    {
+        "user": "1",
+        "purpose": "Discussion on capybaras",
+        "text": "<@1| one> set the channel purpose: Discussion on capybaras",
+        "type": "message",
+        "subtype": "channel_purpose",
+        "ts": "1488455412.728942"
+    },
+    {
+        "type": "message",
+        "user": "2",
+        "text": "Let's get something going for caps!",
+        "ts": "1488465179.164430",
+        "reactions": [
+            {
+                "name": "+1",
+                "users": [
+                    "1"
+                ],
+                "count": 1
+            }
+        ]
+    }
+]
