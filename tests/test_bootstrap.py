@@ -21,5 +21,8 @@ class TestStringMethods(unittest.TestCase):
         posts = {datetime.datetime(2014, 9, 26, 0, 0): 1, datetime.datetime(2014, 9, 24, 0, 0): 4}
         self.assertEqual(sp.total_posts_for_week_ending_on_given_day(posts,datetime.datetime(2014,9,27,0,0)),5)
 
+    def test_post_map(self):
+        map = sp.create_user_id_map_to_date_and_number_posts_from_archive_data('fixture')
+        self.assertEqual(map, {u'1': {datetime.datetime(2017, 3, 2, 0, 0): 3}, u'2': {datetime.datetime(2017, 3, 2, 0, 0): 1}})
 if __name__ == '__main__':
     unittest.main()

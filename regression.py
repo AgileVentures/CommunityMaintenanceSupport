@@ -33,6 +33,16 @@ for user_id in users:
             upgrade = sp.did_user_upgrade_in(premium_postings, user_id, date + datetime.timedelta(days=21))
             Y.append(upgrade)
 
+# import csv
+#
+# ofile  = open('data.csv', "wb")
+# writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
+# writer.writerow(["week1", "week2", "week3", "premium"])
+# for idx, covariates in enumerate(X):
+#     covariates.append(Y[idx])
+#     writer.writerow(covariates)
+# ofile.close()
+
 import statsmodels.api as sm
 
 X2 = sm.add_constant(X)

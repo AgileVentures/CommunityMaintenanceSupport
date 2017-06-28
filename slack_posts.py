@@ -37,8 +37,8 @@ def create_user_id_map_to_name_and_email_from_API_data():
             users[user['id']] = {"name": user['name'], "email": email}
     return users
 
-def create_user_id_map_to_date_and_number_posts_from_archive_data():
-    files = glob.glob('./av/*/*.json')
+def create_user_id_map_to_date_and_number_posts_from_archive_data(directory = '.'):
+    files = glob.glob(directory + '/av/*/*.json')
     posts = {}
     for f in files:
         with open(f) as data_file:
