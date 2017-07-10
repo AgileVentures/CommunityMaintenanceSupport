@@ -21,7 +21,7 @@ number_of_weeks = 52
 X = []
 Y = []
 
-for user_id in users:
+for user_id, _ in sorted(users.items()):
     for multiplier in range(1,53):
         date = start_date + datetime.timedelta(days=7*multiplier)
         if user_id in posts.keys():
