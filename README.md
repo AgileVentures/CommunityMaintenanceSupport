@@ -8,12 +8,22 @@ python run_tests.py from the command line at the root of the project should suff
 # How to train and predict using basic RandomForest model
 You first need the slack archive unzipped into av subfolder.  Inside that av subfolder, you also need to place a users.json file FROM the users.list api.  You also need a stripe_customers.csv with stripe signup data.
 
-Then run python data_dump.py to export the historic user signup and user activity data to data.csv, which should be git ignored.
+Then run `python data_dump.py` to export the historic user signup and user activity data to data.csv, which should be git ignored.
 
-Also, run, python export.py to export the current week's data to to_be_predicted.csv.  The script as currently constituted will export data for the week ending on July 8th 2017 and the preceding 3 weeks of activity.  To change this to accomodate future archive dumps and dates, change the dates as appropriate in export.py
+Also, run, `python export.py` to export the current week's data to `to_be_predicted.csv`.  The script as currently constituted will export data for the week ending on July 8th 2017 and the preceding 3 weeks of activity.  To change this to accomodate future archive dumps and dates, change the dates as appropriate in `export.py`
 
-Now with both data.csv and to_be_predicted.csv in the main folder, open up R or R studio.  Set the current working directory to the main folder for CommunityMaintenanceSupport and run the
-code contained in random_forest.R.  You should get some output predicting those likely to signup.
+Now with both `data.csv` and `to_be_predicted.csv` in the main folder, open up R or R studio.  Set the current working directory (Session --> Set Working Directory) to the main folder for CommunityMaintenanceSupport and run the
+code contained in `random_forest.R` (note, all code needs to be selected in order to run, and the following packages need to be installed:
+
+```
+install.packages('caTools')
+install.packages('DMwR')
+install.packages('ROCR')
+install.packages('randomForest')
+```
+
+
+).  You should get some output predicting those likely to signup.
 
 ## Objective
 
