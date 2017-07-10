@@ -7,7 +7,7 @@ spl = sample.split(nonzerodata$premium,SplitRatio = .75)
 train = nonzerodata[spl,]
 test = nonzerodata[!spl,]
 
-train$premium <- factor(ifelse(train$premium == 1,"rare","common")) 
+train$premium <- factor(ifelse(train$premium == 1,"rare","common"))
 test$premium <- factor(ifelse(test$premium == 1, "rare", "common"))
 
 train <- SMOTE(premium ~ ., train, perc.over = 300,perc.under=500)
@@ -25,11 +25,16 @@ library(randomForest)
 rf = randomForest(premium ~ week1 + week2 + week3, train, ntree=500)
 
 #probTest = predict(model, type="response", newdata=test)
-#predTest <- prediction(probTest, test$premium)   
+#predTest <- prediction(probTest, test$premium)
 #perfTest <- performance(predTest, "auc")
 #perfTest@y.values[[1]]
 
 probTest = predict(rf, type="prob", newdata=test)[,2]
-predTest <- prediction(probTest, test$premium)   
+predTest <- prediction(probTest, test$premium)
 perfTest <- performance(predTest, "auc")
 perfTest@y.values[[1]] # 0.7092623
+
+to_be_predicted <- read.csv("to_be_predicted.csv")
+
+predictions <- predict(rf, type="class", newdata=to_be_predicted)
+to_be_predicted[predictions == "rare",]$user
