@@ -25,7 +25,7 @@
 import glob, re, json, csv, datetime
 
 users = {}
-with open('./new_av/users.json') as user_file:
+with open('./av/users.json') as user_file:
     for user in json.load(user_file)["members"]:
         if 'email' in user['profile']:
             email = user['profile']['email']
@@ -36,7 +36,7 @@ def find_slack_id_by_email(user_email):
         if value['email'] == user_email:
             return id
 
-files = glob.glob('./new_av/*/*.json')
+files = glob.glob('./av/*/*.json')
 posts = {}
 for f in files:
     with open(f) as data_file:
@@ -78,7 +78,6 @@ for user in users_with_any_activity_in_last_three_weeks:
     week3 = activity_levels_three_weeks_before_export.get(user,(0,''))[0]
     activities[user] = (week1, week2, week3)
 
-print activities
 import csv
 
 ofile  = open('to_be_predicted.csv', "wb")

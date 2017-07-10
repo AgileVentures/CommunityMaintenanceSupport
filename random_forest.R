@@ -37,4 +37,5 @@ perfTest@y.values[[1]] # 0.7092623
 to_be_predicted <- read.csv("to_be_predicted.csv")
 
 predictions <- predict(rf, type="class", newdata=to_be_predicted)
+print("the users who may well signup are:")
 to_be_predicted[predictions == "rare",]$user
