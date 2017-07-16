@@ -3,7 +3,7 @@ import datetime
 
 users = sp.create_user_id_map_to_name_and_email_from_API_data() # id: {'name': name, 'email': email}
 posts = sp.create_user_id_map_to_date_and_number_posts_from_archive_data() # id: { date: total_posts_on_that_day}
-premium_postings = sp.create_user_id_map_to_posts_and_upgrade_date_from_stripe_data(users,posts) # id: {'posts': postss, 'created_at': upgrade date}
+premium_postings = sp.create_user_id_map_to_posts_and_upgrade_date_from_stripe_and_paypal_data(users,posts) # id: {'posts': postss, 'created_at': upgrade date}
 
 # X = array([[23,34,12,12.5],[21,34,12,19.5], ...])
 
