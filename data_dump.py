@@ -30,15 +30,21 @@ for user_id, _ in sorted(users.items()):
             week_minus_one = sp.total_posts_for_week_ending_on_given_day(posts[user_id], date + datetime.timedelta(days=14))
             user_name = users[user_id]['name']
             # metric
-            X.append([week_minus_three, week_minus_two, week_minus_one, user_name])
             upgrade = sp.did_user_upgrade_in(premium_postings, user_id, date + datetime.timedelta(days=21))
+            if upgrade == 1:
+                start_of_week = (date+datetime.timedelta(days=14)).strftime("%Y-%m-%d")
+                end_of_week = (date+datetime.timedelta(days=21)).strftime("%Y-%m-%d")
+                upgrade_week = start_of_week+" - " + end_of_week
+            else:
+                upgrade_week = ""
+            X.append([week_minus_three, week_minus_two, week_minus_one, upgrade_week, user_name])
             Y.append(upgrade)
 
 import csv
 
 ofile  = open('data.csv', "wb")
 writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-writer.writerow(["week3", "week2", "week1", "user_name", "premium"])
+writer.writerow(["week3", "week2", "week1", "user_name", "signup_week", "premium"])
 for idx, covariates in enumerate(X):
     covariates.append(Y[idx])
     writer.writerow(covariates)
