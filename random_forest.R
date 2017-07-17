@@ -36,6 +36,17 @@ perfTest@y.values[[1]] # 0.7092623
 
 to_be_predicted <- read.csv("to_be_predicted.csv")
 
+premiums <- read.csv("./av/av_members.csv")
+premiums <- subset(premiums, premiums$Special != "Cancelled")
+
+to_be_predicted <- subset(to_be_predicted, !(user %in% premiums$Slack))
+
 predictions <- predict(rf, type="class", newdata=to_be_predicted)
 print("the users who may well signup are:")
 to_be_predicted[predictions == "rare",]$user
+
+print("the top 10 free members that might signup are: ")
+
+probs <- predict(rf, type="prob", newdata=to_be_predicted)[,2]
+ids = names(sort(probs, decreasing=TRUE))[0:10]
+to_be_predicted[ids,]$user

@@ -6,7 +6,7 @@ Some analytics to investigate community activity within the AgileVentures Slack 
 python run_tests.py from the command line at the root of the project should suffice
 
 # How to train and predict using basic RandomForest model
-You first need the slack archive unzipped into av subfolder.  Inside that av subfolder, you also need to place a users.json file FROM the users.list api.  You also need a stripe_customers.csv with stripe signup data and a PayPalPayments.csv.
+You first need the slack archive unzipped into av subfolder.  Inside that av subfolder, you also need to place a users.json file FROM the users.list api.  You also need a stripe_customers.csv with stripe signup data and a PayPalPayments.csv, and you also need in that same folder av_members.csv indicating current premium members.
 
 Then run python data_dump.py to export the historic user signup and user activity data to data.csv, which should be git ignored.
 
