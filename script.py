@@ -30,29 +30,84 @@ for f in files:
                     posts[msg['user']] = {}
                     posts[msg['user']][date] = 1
 
-premium_postings = {}
-with open('./av/stripe_customers.csv') as stripe_customers:
-    reader = csv.DictReader(stripe_customers)
-    for customer in reader:
-        id = find_slack_id_by_email(customer['Email'])
-        if id:
-            premium_postings[id] = {"posts": posts[id], "start_date": datetime.datetime.strptime(re.sub(r'(\d\d\d\d)\-(\d\d)\-(\d\d).*', r'\1-\2-\3', customer['Created (UTC)']), '%Y-%m-%d')}
-        else:
-            print "user not found: "+ customer['Email']
+# posts contains usernames as keys, to another map that has (date)day keys,
+# with values being number of posts on that day
+
+# premium_postings = {}
+# with open('./av/stripe_customers.csv') as stripe_customers:
+#     reader = csv.DictReader(stripe_customers)
+#     for customer in reader:
+#         id = find_slack_id_by_email(customer['Email'])
+#         if id:
+#             premium_postings[id] = {"posts": posts[id], "start_date": datetime.datetime.strptime(re.sub(r'(\d\d\d\d)\-(\d\d)\-(\d\d).*', r'\1-\2-\3', customer['Created (UTC)']), '%Y-%m-%d')}
+#         else:
+#             print "user not found: "+ customer['Email']
+
+# premium postings is the subset of the posts map where the user email
+# matches a premium user email (and includes start date)
 
 def total_posts_for_week_ending_on_given_day(posts, end_date):
     beginning_date = end_date - datetime.timedelta(days=6)
     return reduce(lambda total, date: posts[date] + total if date <= end_date and beginning_date <= date else total , posts, 0)
 
-one_week_before_premium_signup = {}
-two_weeks_before_premium_signup = {}
-three_weeks_before_premium_signup = {}
-for premium_user in premium_postings:
-    one_week_before_premium_signup[premium_user] = total_posts_for_week_ending_on_given_day(premium_postings[premium_user]["posts"], premium_postings[premium_user]["start_date"])
-    two_weeks_before_premium_signup[premium_user] = total_posts_for_week_ending_on_given_day(premium_postings[premium_user]['posts'],premium_postings[premium_user]["start_date"] - datetime.timedelta(days=7))
-    three_weeks_before_premium_signup[premium_user] = total_posts_for_week_ending_on_given_day(premium_postings[premium_user]['posts'],premium_postings[premium_user]["start_date"] - datetime.timedelta(days=14))
+# one_week_before_premium_signup = {}
+# two_weeks_before_premium_signup = {}
+# three_weeks_before_premium_signup = {}
+# for premium_user in premium_postings:
+#     one_week_before_premium_signup[premium_user] = total_posts_for_week_ending_on_given_day(premium_postings[premium_user]["posts"], premium_postings[premium_user]["start_date"])
+#     two_weeks_before_premium_signup[premium_user] = total_posts_for_week_ending_on_given_day(premium_postings[premium_user]['posts'],premium_postings[premium_user]["start_date"] - datetime.timedelta(days=7))
+#     three_weeks_before_premium_signup[premium_user] = total_posts_for_week_ending_on_given_day(premium_postings[premium_user]['posts'],premium_postings[premium_user]["start_date"] - datetime.timedelta(days=14))
 
-plt.figure()
-plt.boxplot([one_week_before_premium_signup.values(), two_weeks_before_premium_signup.values(), three_weeks_before_premium_signup.values()],1)
+# plt.figure()
+# plt.boxplot([one_week_before_premium_signup.values(), two_weeks_before_premium_signup.values(), three_weeks_before_premium_signup.values()],1)
 
-plt.show()
+# plt.show()
+#two_week_before_export_time = datetime.datetime.strptime('2017-03-12',"%Y-%m-%d")
+#three_week_before_export_time = datetime.datetime.strptime('2017-03-05',"%Y-%m-%d")
+
+import re
+def user_activity_levels(date):
+    activity_levels = {}
+    for user in posts:
+      number_posts = total_posts_for_week_ending_on_given_day(posts[user], datetime.datetime.strptime(date,"%Y-%m-%d"))
+      if number_posts > 0:
+        activity_levels[users[user]['name']] = (number_posts, re.sub(r'.*\@','',users[user]['email']))
+    return activity_levels
+
+activity_levels_one_week_before_export = user_activity_levels('2017-05-07')
+activity_levels_two_weeks_before_export = user_activity_levels('2017-04-30')
+activity_levels_three_weeks_before_export = user_activity_levels('2017-04-23')
+
+#def user_activity_trends(activity_levels_week_one, activity_levels_week_two, activity_levels_week_three):
+
+def format_direct_message_link(user_name):
+    return "https://agileventures.slack.com/messages/@"+user_name+"/"
+
+trends = {}
+for user in activity_levels_one_week_before_export.keys():
+    user_email_domain = activity_levels_one_week_before_export[user][1]
+    a1 = activity_levels_one_week_before_export[user][0]
+    a2 = activity_levels_two_weeks_before_export.get(user,(0,''))[0]
+    a3 = activity_levels_three_weeks_before_export.get(user,(0,''))[0]
+    trends[format_direct_message_link(user)] = (2*(a1-a2)/3.0 + (a2-a3)/3.0,user_email_domain)
+
+# { 'mtc2013' => 45.6, }
+# { 'mtc2013' => (45.6, 'gmail.com'), }
+
+
+import pprint
+import operator
+#pp = pprint.PrettyPrinter(indent=4)
+output = sorted(trends.items(), key=operator.itemgetter(1), reverse=True)[0:15]
+
+#pp.pprint(output)
+
+for line in output:
+    print line[0] + " " + "{0:.2f}".format(line[1][0]) + " " + line[1][1]
+
+# import pprint
+# import operator
+# pp = pprint.PrettyPrinter(indent=4)
+# output = sorted(activity_levels_one_week_before_export.items(), key=operator.itemgetter(1), reverse=True)
+#
+# pp.pprint(output)
