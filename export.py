@@ -65,9 +65,9 @@ def user_activity_levels(date):
         activity_levels[users[user]['name']] = (number_posts, re.sub(r'.*\@','',users[user]['email']))
     return activity_levels
 
-activity_levels_one_week_before_export = user_activity_levels('2017-07-08')
-activity_levels_two_weeks_before_export = user_activity_levels('2017-07-01')
-activity_levels_three_weeks_before_export = user_activity_levels('2017-06-24')
+activity_levels_one_week_before_export = user_activity_levels('2017-07-15')
+activity_levels_two_weeks_before_export = user_activity_levels('2017-07-08')
+activity_levels_three_weeks_before_export = user_activity_levels('2017-07-01')
 
 users_with_any_activity_in_last_three_weeks = list(set(activity_levels_one_week_before_export.keys()).union(activity_levels_two_weeks_before_export.keys()).union(activity_levels_three_weeks_before_export.keys()))
 
