@@ -25,7 +25,6 @@ install.packages('randomForest')
 
 ).  You should get some output predicting those likely to signup.
 
->>>>>>> ranking_two
 ## Objective
 
 How to identify community members who are contributing more and provide them with additional support.
