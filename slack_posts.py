@@ -95,13 +95,15 @@ def total_posts_for_week_ending_on_given_day(posts, end_date):
     beginning_date = end_date - datetime.timedelta(days=6)
     return reduce(lambda total, date: posts[date] + total if date <= end_date and beginning_date <= date else total , posts, 0)
 
-def create_user_id_map_to_name_and_email_from_API_data():
+def create_user_id_map_to_name_and_email_from_API_data(email_to_countries):
     users = {}
     with open('./av/users.json') as user_file:
         for user in json.load(user_file)["members"]:
             if 'email' in user['profile']:
                 email = user['profile']['email']
-            users[user['id']] = {"name": user['name'], "email": email}
+                if email in email_to_countries:
+                    country = email_to_countries[email]
+            users[user['id']] = {"name": user['name'], "email": email, "country": country}
     return users
 
 def create_user_id_map_to_date_and_number_posts_from_archive_data(directory = '.'):
@@ -121,3 +123,11 @@ def create_user_id_map_to_date_and_number_posts_from_archive_data(directory = '.
                         posts[msg['user']] = {}
                         posts[msg['user']][date] = 1
     return posts
+
+def create_email_to_country_from_csv():
+    email_to_country = {}
+    with open('./av/user_countries.csv') as users_countries:
+        reader = csv.DictReader(users_countries)
+        for user_country in reader:
+            email_to_country[user_country['email']] = user_country['country']
+    return email_to_country

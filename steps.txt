@@ -1,0 +1,15 @@
+First, get backup from heroku in the websiteone directory locally as latest.dump ala
+
+heroku pg:backups:download --app websiteone-production
+
+Then move the latest.dump to the subdirectory av locally.
+
+Then start postgres and go into a command line and create cms_user database:
+
+# CREATE DATABASE cms_user;
+
+You should get a message like: CREATE DATABASE
+
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d cms_user av/latest.dump
+
+Then run export_user_countries.py to export to av/user_countries.csv
