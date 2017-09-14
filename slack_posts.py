@@ -12,16 +12,19 @@ def find_slack_id_by_email(users,user_email):
         if value['email'] == user_email:
             return id
 
+import unicodecsv
+
 def create_user_id_map_to_posts_and_upgrade_date_from_stripe_and_paypal_data(users,posts):
     paypal_payments = {}
     premium_postings = {}
     unresolved_emails = {}
-    with open('./av/PayPalPayments.csv') as payments:
-        reader = csv.DictReader(payments)
+    with open('./av/PayPalPayments.CSV') as payments:
+        reader = unicodecsv.DictReader(payments, encoding='utf-8-sig')
         for payment in reader:
-            if payment['Balance Impact'] == "Credit" and payment['Type'] == "Subscription Payment":
+           print payment
+           if payment['Balance Impact'] == "Credit" and payment['Type'] == "Subscription Payment":
                 email = payment['From Email Address']
-                date_time_string = payment['Date'] + " " + payment['Time']
+                date_time_string = payment[u'"Date"'] + " " + payment['Time']
                 if payment['Gross'] == '10.00':
                     trial_period_adjustment = datetime.timedelta(days=7)
                 else:

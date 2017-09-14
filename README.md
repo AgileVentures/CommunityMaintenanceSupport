@@ -3,10 +3,18 @@
 Some analytics to investigate community activity within the AgileVentures Slack community (and associated systems)
 
 ## How to run tests  
-python run_tests.py from the command line at the root of the project should suffice
+`python run_tests.py` from the command line at the root of the project should suffice
 
 # How to train and predict using basic RandomForest model
+
 You first need the slack archive unzipped into av subfolder.  Inside that av subfolder, you also need to place a users.json file FROM the users.list api.  You also need a stripe_customers.csv with stripe signup data and a PayPalPayments.csv, and you also need in that same folder av_members.csv indicating current premium members.
+
+1) `av/av_members.csv` <-- current premium members (from google drive spreadsheet + extra)
+2) `av/PayPalPayments.CSV` <-- PayPal payments from AV members (from PayPal) for date of signup
+3) `av/stripe_customers.csv` <-- Stripe payments from AV members (from Stripe) for date of signup
+4) `av/unresolved_emails.csv` <-- hand created to match people up
+5) `Agile Ventures Slack export Sep 13 2017.zip` <-- from https://agileventures.slack.com/services/export, e.g. `unzip "Agile Ventures Slack export Sep 13 2017.zip"`
+6) grab `users.json` from https://api.slack.com/methods/users.list/test
 
 Then run `python data_dump.py` to export the historic user signup and user activity data to data.csv, which should be git ignored.
 
