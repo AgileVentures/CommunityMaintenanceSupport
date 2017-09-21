@@ -50,3 +50,4 @@ print("the top 10 free members that might signup are: ")
 probs <- predict(rf, type="prob", newdata=to_be_predicted)[,2]
 ids = names(sort(probs, decreasing=TRUE))[0:10]
 to_be_predicted[ids,]$user
+to_be_predicted[ids,]$email
