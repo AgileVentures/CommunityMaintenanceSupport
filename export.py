@@ -61,13 +61,15 @@ def user_activity_levels(date):
     activity_levels = {}
     for user in posts:
       number_posts = total_posts_for_week_ending_on_given_day(posts[user], datetime.datetime.strptime(date,"%Y-%m-%d"))
-      if number_posts > 0:
-        activity_levels[users[user]['name']] = (number_posts, re.sub(r'.*\@','',users[user]['email']))
+      if number_posts > 0 and user in users:
+        activity_levels[users[user]['name']] = (number_posts, users[user]['email'])
+      elif number_posts > 0 :
+          print("user not in user.json" + " " + user)
     return activity_levels
 
-activity_levels_one_week_before_export = user_activity_levels('2017-07-15')
-activity_levels_two_weeks_before_export = user_activity_levels('2017-07-08')
-activity_levels_three_weeks_before_export = user_activity_levels('2017-07-01')
+activity_levels_one_week_before_export = user_activity_levels('2017-09-16')
+activity_levels_two_weeks_before_export = user_activity_levels('2017-09-09')
+activity_levels_three_weeks_before_export = user_activity_levels('2017-09-02')
 
 users_with_any_activity_in_last_three_weeks = list(set(activity_levels_one_week_before_export.keys()).union(activity_levels_two_weeks_before_export.keys()).union(activity_levels_three_weeks_before_export.keys()))
 
@@ -76,17 +78,19 @@ for user in users_with_any_activity_in_last_three_weeks:
     week1 = activity_levels_one_week_before_export.get(user,(0,''))[0]
     week2 = activity_levels_two_weeks_before_export.get(user,(0,''))[0]
     week3 = activity_levels_three_weeks_before_export.get(user,(0,''))[0]
-    activities[user] = (week1, week2, week3)
+    email = activity_levels_one_week_before_export.get(user,(0,''))[1]
+    activities[user] = (week1, week2, week3, email)
 
 import csv
 
 ofile  = open('to_be_predicted.csv', "w", encoding="utf-8")
 writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-writer.writerow(["user", "week3", "week2", "week1", "premium"])
+writer.writerow(["user", "week3", "week2", "week1", "email", "premium"])
 for user in activities:
     week_1 = activities[user][0]
     week_2 = activities[user][1]
     week_3 = activities[user][2]
-    values = [user, week_3, week_2, week_1 ]
+    email = activities[user][3]
+    values = [user, week_3, week_2, week_1, email ]
     writer.writerow(values)
 ofile.close()
