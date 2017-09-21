@@ -42,7 +42,7 @@ for user_id, _ in sorted(users.items()):
 
 import csv
 
-ofile  = open('data.csv', "wb")
+ofile  = open('data.csv', "w")
 writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
 writer.writerow(["week3", "week2", "week1", "user_name", "signup_week", "premium"])
 for idx, covariates in enumerate(X):
