@@ -16,7 +16,7 @@ def create_user_id_map_to_posts_and_upgrade_date_from_stripe_and_paypal_data(use
     paypal_payments = {}
     premium_postings = {}
     unresolved_emails = {}
-    with open('./av/PayPalPayments.CSV') as payments:
+    with open('./av/PayPalPayments.CSV', encoding="utf-8-sig") as payments:
         reader = csv.DictReader(payments)
         for payment in reader:
            if payment['Balance Impact'] == "Credit" and payment['Type'] == "Subscription Payment":
