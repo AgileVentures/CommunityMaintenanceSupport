@@ -21,10 +21,9 @@ def create_user_id_map_to_posts_and_upgrade_date_from_stripe_and_paypal_data(use
     with open('./av/PayPalPayments.CSV') as payments:
         reader = unicodecsv.DictReader(payments, encoding='utf-8-sig')
         for payment in reader:
-           print payment
            if payment['Balance Impact'] == "Credit" and payment['Type'] == "Subscription Payment":
                 email = payment['From Email Address']
-                date_time_string = payment[u'"Date"'] + " " + payment['Time']
+                date_time_string = payment[u'Date'] + " " + payment['Time']
                 if payment['Gross'] == '10.00':
                     trial_period_adjustment = datetime.timedelta(days=7)
                 else:
