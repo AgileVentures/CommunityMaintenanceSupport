@@ -108,7 +108,7 @@ def create_user_id_map_to_date_and_number_posts_from_archive_data(directory = '.
     files = glob.glob(directory + '/av/*/*.json')
     posts = {}
     for f in files:
-        with open(f, encoding='utf-8') as data_file:
+        with open(f, encoding="utf-8") as data_file:
             date = datetime.datetime.strptime(re.sub('.json', '',re.sub(r'.*(\d\d\d\d)\-(\d\d)\-(\d\d)', r'\1-\2-\3', f)), "%Y-%m-%d")
             data = json.load(data_file)
             for msg in data:

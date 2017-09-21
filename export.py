@@ -22,7 +22,7 @@
 # new_df = pd.DataFrame({'weekly_post_total' : grouping.size()}).reset_index()
 # print new_df[(new_df.user == "K0") & (new_df.level_1 == "05/06/17 - 11/06/17")]["weekly_post_total"][0]
 
-import glob, re, json, csv, datetime
+import glob, re, json, csv, datetime,functools
 
 users = {}
 with open('./av/users.json') as user_file:
@@ -39,7 +39,7 @@ def find_slack_id_by_email(user_email):
 files = glob.glob('./av/*/*.json')
 posts = {}
 for f in files:
-    with open(f) as data_file:
+    with open(f, encoding="utf-8") as data_file:
         date = datetime.datetime.strptime(re.sub('.json', '',re.sub(r'.*(\d\d\d\d)\-(\d\d)\-(\d\d)', r'\1-\2-\3', f)), "%Y-%m-%d")
         data = json.load(data_file)
         for msg in data:
@@ -54,7 +54,7 @@ for f in files:
 
 def total_posts_for_week_ending_on_given_day(posts, end_date):
     beginning_date = end_date - datetime.timedelta(days=6)
-    return reduce(lambda total, date: posts[date] + total if date <= end_date and beginning_date <= date else total , posts, 0)
+    return functools.reduce(lambda total, date: posts[date] + total if date <= end_date and beginning_date <= date else total , posts, 0)
 
 import re
 def user_activity_levels(date):
@@ -80,7 +80,7 @@ for user in users_with_any_activity_in_last_three_weeks:
 
 import csv
 
-ofile  = open('to_be_predicted.csv', "wb")
+ofile  = open('to_be_predicted.csv', "w", encoding="utf-8")
 writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
 writer.writerow(["user", "week3", "week2", "week1", "premium"])
 for user in activities:
