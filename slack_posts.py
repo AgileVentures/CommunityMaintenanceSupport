@@ -101,7 +101,9 @@ def create_user_id_map_to_name_and_email_from_API_data():
         for user in json.load(user_file)["members"]:
             if 'email' in user['profile']:
                 email = user['profile']['email']
-            users[user['id']] = {"name": user['name'], "email": email}
+                name = user['profile']['display_name']
+            if not (user['is_bot'] or name == "tansaku"):
+                users[user['id']] = {"name": user['name'], "email": email}
     return users
 
 def create_user_id_map_to_date_and_number_posts_from_archive_data(directory = '.'):

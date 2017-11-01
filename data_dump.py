@@ -5,15 +5,6 @@ users = sp.create_user_id_map_to_name_and_email_from_API_data() # id: {'name': n
 posts = sp.create_user_id_map_to_date_and_number_posts_from_archive_data() # id: { date: total_posts_on_that_day}
 premium_postings = sp.create_user_id_map_to_posts_and_upgrade_date_from_stripe_and_paypal_data(users,posts) # id: {'posts': postss, 'created_at': upgrade date}
 
-# X = array([[23,34,12,12.5],[21,34,12,19.5], ...])
-
-# # loop through users
-#   # loop through dates (week -3, week -2, week -1, week 0)
-#     # generate data array; [week-2,week-1,week0,metric]
-#     # lookup in premium_postings is user upgrade within week0?
-#       # if it is, then Y data is 1, if not (or no upgrade) 0
-
-# Y = array([0,0, ...., 1, ...])
 
 start_date = datetime.datetime(2016, 5, 1, 0, 0, 0)
 number_of_weeks = 52
@@ -49,41 +40,3 @@ for idx, covariates in enumerate(X):
     covariates.append(Y[idx])
     writer.writerow(covariates)
 ofile.close()
-
-# import statsmodels.api as sm
-#
-# X2 = sm.add_constant(X)
-# est = sm.Logit(Y, X2)
-# est2 = est.fit()
-# print(est2.summary())
-# prediction_probabilities = est2.predict()
-#
-# L = .0003
-# falsePositives = truePositives = falseNegatives = trueNegatives = 0
-#
-# for index, p in enumerate(prediction_probabilities):
-#     result = Y[index]
-#     #here we are predicting negative
-#     if p < L:
-#         #but the result is a positive
-#         if (result == 1):
-#             falseNegatives += 1
-#         #and the result is a negative
-#         else:
-#             trueNegatives += 1
-#     #here we are predicting a positive
-#     else:
-#         #but the result is a negative
-#         if (result == 0):
-#             falsePositives += 1
-#         #and the result is a positive
-#         else:
-#             truePositives += 1
-#
-# print(falsePositives)
-# print(truePositives)
-# print(falseNegatives)
-# print(trueNegatives)
-#
-# print 'recall is: {:10.4f}'.format(truePositives / (1.0 * (truePositives + falseNegatives)))
-# print 'precision is: {:10.4f}'.format(truePositives / (1.0 * (truePositives + falsePositives)))
